@@ -18,23 +18,7 @@
 # storage location
 
 
-# dev env
-
-import pack
-
-i = pack.item_ls('../DATA/jan_pack.xlsx')
-dic = i.ls_xml()
-
-# end dev env
-
-# actual dependecies
-from utils import append_pack_info
-
-
-
-location = {}
-location['location 1'] = ( 3, [(96,48,60),(96,48,60),(48,48,60)], [['Custom Crate', 'Cardboard Box', 'Taco Shell', 'Slipcase', 'slipcase', 'Tube'], ['Tube', 'Custom Crate', 'Cardboard Box'], ['Taco Shell', 'slipcase'] ], 'Big Blue' )
-
+from src import utils
 
 class storage_spaces():
 
@@ -46,50 +30,86 @@ class storage_spaces():
 
     # check to make sure the packages are all supposed to be going to the same place
     def in_right_location(self):
-
         right_location = {}
-        wrong_location = {} #TODO send wrong_locatoin somewhere
-
+        wrong_location = {} 
         storage_facility = self.location['location 1'][3]
         
         for k, v in self.pack_item_ls.items():
             if v[6] == storage_facility:
-                #print(k + 'is in the right location')
                 item = list(v)
-                item2 = append_pack_info(item, self.location['location 1'][2])
+                item2 = utils.append_pack_info(item, self.location['location 1'][2])
                 right_location[k] = item2
             else:
-                #print(k +' is in ' + v[6] + ' instead of in ' + storage_facility)
                 wrong_location[k] = v
 
         return right_location
 
-    # split the packages by packing type
+
+    # makes in wrong_locatoin_items callable from app.py to graph or something
+    def in_wrong_location(self):
+        right_location = {}
+        wrong_location = {} #TODO send wrong_locatoin somewhere
+        storage_facility = self.location['location 1'][3]
+        
+        for k, v in self.pack_item_ls.items():
+            if v[6] == storage_facility:
+                item = list(v)
+                item2 = utils.append_pack_info(item, self.location['location 1'][2])
+                right_location[k] = item2
+            else:
+                wrong_location[k] = v
+
+        return wrong_location
+
+
+
+    # split the packages by packing type and spaces they will fit in
+    # this will generate the number of dictionaries equal to the number
+    # of available storage spaces. each dictionary will contain every possible
+    # key: value pair that can fit in it.
+
     def pack_types_in_spaces(self):
-
-        # upgraded self.pack_item_ls
-
-        i = self.in_right_location() #TOBE removed
-
-        # dic with each storage_space as key and values of all items that can be alloted to them
-        # in terms of accepted packing materials
-
+        i = self.in_right_location() 
+        allowed_spaces = {}
+        cant_fit = {} #TODO do something with this can't fit stuff
         storage_facility = self.location['location 1']
+
         for num in range(self.location['location 1'][0]):
-            space_size = storage_facility[1][num]
+            space_size = [float(storage_facility[1][num][0]), float(storage_facility[1][num][1]), float(storage_facility[1][num][2])]
             storage_spaces_allotment = storage_facility[2][num]
-            print(space_size, storage_spaces_allotment)
+
+            # make sure it fils in storage space size
+            item_dic = {}
             for k, v in i.items():
-                pass
+                dims = utils.best_rotation([v[1], v[2], v[3]])
+                if dims[0] <= space_size[0] and dims[1] <= space_size[1] and dims[2] <= space_size[2]:
+
+                    # make sure item is allowed in storage space
+                    if v[7] in storage_spaces_allotment:
+                        item_dic[k] = v
+                else:
+                    cant_fit[k] = v
+
+            allowed_spaces[num] = item_dic
+        return allowed_spaces
+    
 
 
+    # makes all the items that can't fit callable from app.py if
+    # len(put_away_items) != len(master_list)
+    def cant_fit(self):
+        i = self.in_right_location() 
+        cant_fit = {} #TODO do something with this can't fit stuff
+        storage_facility = self.location['location 1']
 
-    #def pack_types():
-    #    pass
-    # assign packages to their correct location
-    #def assign_location():
-    #    pass
+        for num in range(self.location['location 1'][0]):
+            space_size = [float(storage_facility[1][num][0]), float(storage_facility[1][num][1]), float(storage_facility[1][num][2])]
 
-i = storage_spaces(location, dic)
-dicks = i.pack_types_in_spaces()
-print(dicks, 'i')
+            # make sure it fils in storage space size
+            for k, v in i.items():
+                dims = utils.best_rotation([v[1], v[2], v[3]])
+                if dims[0] <= space_size[0] and dims[1] <= space_size[1] and dims[2] <= space_size[2]:
+                    pass
+                else:
+                    cant_fit[k] = v
+        return cant_fit

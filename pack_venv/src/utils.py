@@ -9,8 +9,11 @@ def get_volume(dims):
 # mk a func that says best rotation
 # if dims.could_be_smaller() == true:
 #   dims = roate(dims)
-def best_rotation(item):
-    print('item could be rotated better like *this')
+# will return dims as w, h, l where:
+# sorted(sm = w, med = height, lg = len)
+def best_rotation(dims):
+    sorted_dims = sorted(dims)
+    return sorted_dims
 
 
 
