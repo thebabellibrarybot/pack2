@@ -19,8 +19,8 @@ class item_ls():
             info = tuple((
                     workbook.ARTnum[num],
                     float(workbook.dims[num].split(' x ')[0]),
-                    float(workbook.dims[num].split(' x ')[0]),
-                    float(workbook.dims[num].split(' x ')[0]),
+                    float(workbook.dims[num].split(' x ')[1]),
+                    float(workbook.dims[num].split(' x ')[2]),
                     workbook.client[num],
                     workbook.artist[num],
                     workbook.location[num],

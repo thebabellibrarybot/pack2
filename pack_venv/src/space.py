@@ -28,12 +28,12 @@ dic = i.ls_xml()
 # end dev env
 
 # actual dependecies
-from utils import append_location_info
+from utils import append_pack_info
 
 
 
 location = {}
-location['location 1'] = ( 3, [(5,5,5),(5,5,5),(5,5,5)], ['Custom Crate', 'Cardboard Box', 'Taco Shell', 'Slipcase', 'slipcase'], 'Big Blue' )
+location['location 1'] = ( 3, [(96,48,60),(96,48,60),(48,48,60)], [['Custom Crate', 'Cardboard Box', 'Taco Shell', 'Slipcase', 'slipcase', 'Tube'], ['Tube', 'Custom Crate', 'Cardboard Box'], ['Taco Shell', 'slipcase'] ], 'Big Blue' )
 
 
 class storage_spaces():
@@ -48,26 +48,42 @@ class storage_spaces():
     def in_right_location(self):
 
         right_location = {}
-        wrong_location = {}
+        wrong_location = {} #TODO send wrong_locatoin somewhere
 
         storage_facility = self.location['location 1'][3]
         
         for k, v in self.pack_item_ls.items():
             if v[6] == storage_facility:
                 #print(k + 'is in the right location')
-                right_location[k] = v
-                item = v
-                item2 = append_location_info(v, self.location['location 1'][2])
-
+                item = list(v)
+                item2 = append_pack_info(item, self.location['location 1'][2])
+                right_location[k] = item2
             else:
                 #print(k +' is in ' + v[6] + ' instead of in ' + storage_facility)
                 wrong_location[k] = v
 
-        return storage_facility
-
-
+        return right_location
 
     # split the packages by packing type
+    def pack_types_in_spaces(self):
+
+        # upgraded self.pack_item_ls
+
+        i = self.in_right_location() #TOBE removed
+
+        # dic with each storage_space as key and values of all items that can be alloted to them
+        # in terms of accepted packing materials
+
+        storage_facility = self.location['location 1']
+        for num in range(self.location['location 1'][0]):
+            space_size = storage_facility[1][num]
+            storage_spaces_allotment = storage_facility[2][num]
+            print(space_size, storage_spaces_allotment)
+            for k, v in i.items():
+                pass
+
+
+
     #def pack_types():
     #    pass
     # assign packages to their correct location
@@ -75,5 +91,5 @@ class storage_spaces():
     #    pass
 
 i = storage_spaces(location, dic)
-dic = i.in_right_location()
-print(dic, 'is the storage_facility')
+dicks = i.pack_types_in_spaces()
+print(dicks, 'i')
