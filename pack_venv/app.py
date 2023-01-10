@@ -1,10 +1,13 @@
 from src import pack
 from src import space
 from src.pack import pack_tight
+import os
 
+# Change to argparse and os
 xml_fi = 'DATA/jan_pack.xlsx'
 location = {}
 location['location 1'] = ( 3, [(96,120,60),(96,96,60),(48,48,60)], [['Custom Crate', 'Cardboard Box', 'Taco Shell', 'Slipcase', 'slipcase', 'Tube'], ['Tube', 'Custom Crate', 'Cardboard Box'], ['Taco Shell', 'slipcase'] ], 'Big Blue' )
+# change to artparse adn os
 
 def cleanup(i):
     wrong = i.in_wrong_location()
@@ -32,10 +35,10 @@ def get_ls(xml_fi):
 
 
 
-    # grab items in the wrong space
-    # grab items that didn't fit
-    if len(master_list) != len(dic):
-        dirt = cleanup(i)
+    # cleanup func, grabs items that are in wrong loc & didn't fit
+
+    #if len(master_list) != len(dic):
+    #    dirt = cleanup(i)
         #print(len(dirt[0]), len(dirt[1]))
 
 

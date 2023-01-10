@@ -1,5 +1,10 @@
-# get info from storage location to see what type of packages it accepts
 import re
+import os
+import dotenv
+
+dotenv.load_dotenv()
+BOX_RATIO = os.environ.get('BOX_RATIO')
+
 
 # get volume for dims or storage space that are structured as a list of 3 dims
 def get_volume(dims):
@@ -17,16 +22,14 @@ def best_rotation(dims):
 
 
 
-# mk a func that says 
-# if dims == square_like
-# pack_type == 'cardboard box'
+# func that addjusts pack_type of box_like_pack to 'Cardboard Box'
 def is_box(item):
 
-    # this math needs to be made a little more complex to accomadate for a lot
+    # TODO this math needs to be made a little more complex to accomadate for a lot
     # of different types of rectangles tubes and such ************************
 
     w,h,l = item[3], item[1], item[2]
-    if w > .4 * l or w > .4 * h:
+    if w > float(BOX_RATIO) * l or w > float(BOX_RATIO) * h:
         item[7] = 'Cardboard Box'
         return item
     return item
@@ -49,3 +52,5 @@ def append_pack_info(item, arr):
     return item
 
 
+# charting func: mk_bird_graph, mk_shelf_graph, mk_graph_pdf, mk_list_pdf,
+#                mk_meterics_analysis, mk_artist_by_volume_graph, mk_avg_dims

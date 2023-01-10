@@ -1,4 +1,6 @@
 import pandas as pd
+import numpy as np
+from rectpack import PackingMode, PackingBin, SORT_LSIDE, PackerBBF
 
 # creates a dict of items found in the input xml_fi
 # needs a xml_fi formated so that
@@ -51,6 +53,7 @@ class item_ls():
 
         return hm_dic
 
+# SHELF PACKING FUNC
 # args: master_list, possible_dics
 
 # where master_list == a dictionary of all items that are in the correct 
@@ -63,10 +66,15 @@ class item_ls():
 # particular storage_space. master_list items being packed must also be in the 
 # possible_dics list in order to be allowed into a storage_space
 
-def pack_tight(master_list, possible_dics, location):
+def pack_tight_shelves(master_list, possible_dics, location):
+
+    m_ls = master_list
+    print(len(m_ls))
 
     loc = list(location['location 1'])
-    print(loc[0])
+    for num in range(loc[0]):
+        print(num)
+        loc[1][num]
 
     return 'hello world'
 
