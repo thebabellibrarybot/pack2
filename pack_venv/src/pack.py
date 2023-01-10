@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
-from rectpack import PackingMode, PackingBin, SORT_LSIDE, PackerBBF
+from src import utils
+from rectpack import PackingMode, PackingBin, SORT_LSIDE, PackerBBF, newPacker, MaxRectsBssf
 
 # creates a dict of items found in the input xml_fi
 # needs a xml_fi formated so that
@@ -53,6 +54,25 @@ class item_ls():
 
         return hm_dic
 
+# setup Packer funcs and algo's
+def newPacker(mode = PackingMode.Offline,
+                bin_algo = PackingBin.BBF,
+                pack_algo = MaxRectsBssf,
+                sort_algo = SORT_LSIDE,
+                rotation = False):
+    packer_class = None
+
+    # offline mode
+    if mode == PackingMode.Offline:
+        if bin_algo == PackingBin.BBF:
+            packer_class = PackerBBF
+        if sort_algo:
+            return packer_class(pack_algo=pack_algo, sort_algo=sort_algo)
+        else:
+            return packer_class(pack_algo=pack_algo, rotation=rotation)
+
+
+
 # SHELF PACKING FUNC
 # args: master_list, possible_dics
 
@@ -68,13 +88,21 @@ class item_ls():
 
 def pack_tight_shelves(master_list, possible_dics, location):
 
+
     m_ls = master_list
-    print(len(m_ls))
+    pos_dic = possible_dics
+    in_bin = {}
+
 
     loc = list(location['location 1'])
     for num in range(loc[0]):
-        print(num)
-        loc[1][num]
+        cur_packed = {}
+        if num < 1:
+            cur_space = num
+            cur_space_dims = loc[1][num]
+            cur_pos_items = pos_dic[cur_space]
+            i = utils.ls_item_dic(pos_dic[cur_space])
+            print(i)
 
     return 'hello world'
 
@@ -85,3 +113,5 @@ def pack_tight_shelves(master_list, possible_dics, location):
 # append all info?
 
 # cavalier == guest password
+
+# michael with the retail management

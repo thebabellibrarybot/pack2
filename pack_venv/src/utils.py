@@ -5,6 +5,22 @@ import dotenv
 dotenv.load_dotenv()
 BOX_RATIO = os.environ.get('BOX_RATIO')
 
+# takes a single pos_dic full of dics and returns each dic as a ls
+# e.g. {"HM001": ['art001', 3,21,22, 'nyc-la', 'jane doe - artword', 2021, 'acrylic on cavas', 'big blue', 'taco shell']}
+# into [21,3, HM001-art001]
+def ls_item_dic(pos_dics):
+    print(type(pos_dics))
+    rect_ls = []
+    for k,v in pos_dics.items():
+        #print(k, v)
+        rects = ((k+v[0]))
+        print(rects)
+    return 'hello from ls_item_dic'
+
+def will_fit(master_list, location):
+    # TODO if master_list > location return false
+    # if master_list < location return true
+    pass
 
 # get volume for dims or storage space that are structured as a list of 3 dims
 def get_volume(dims):

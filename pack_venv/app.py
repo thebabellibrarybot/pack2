@@ -1,6 +1,6 @@
 from src import pack
 from src import space
-from src.pack import pack_tight
+from src.pack import pack_tight_shelves
 import os
 
 # Change to argparse and os
@@ -15,7 +15,7 @@ def cleanup(i):
     # TODO map and list wrong & didnt_fit
     return wrong, didnt_fit
 
-def get_ls(xml_fi):
+def pack_shelves(xml_fi, location):
 
     # gen packlist
     i = pack.item_ls(xml_fi)
@@ -30,8 +30,9 @@ def get_ls(xml_fi):
     # where each packed_item is removed from master_list
     # and sorted into storage_spaces
 
-    packed_tight = pack_tight(master_list, possible_dics, location)
-    print(packed_tight)
+    packed_tight_shelves = pack_tight_shelves(master_list, possible_dics, location)
+    print(packed_tight_shelves, 'returned from packed_tight_shelves')
+
 
 
 
@@ -42,7 +43,4 @@ def get_ls(xml_fi):
         #print(len(dirt[0]), len(dirt[1]))
 
 
-
-    
-
-get_ls(xml_fi=xml_fi)
+pack_shelves(xml_fi=xml_fi, location = location)
