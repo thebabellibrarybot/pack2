@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from src import utils
+import csv
 from rectpack import PackingMode, PackingBin, SORT_LSIDE, PackerBBF, newPacker, MaxRectsBssf
 
 # creates a dict of items found in the input xml_fi
@@ -22,37 +23,69 @@ class item_ls():
 
     def ls_xml(self):
 
-        #create a dic from xml fi
-        hm_dic = {}
+        file = self.xml_fi
+        print(file, 'file from pack')
 
-        df = pd.read_excel(self.xml_fi)
-        workbook = df.rename(columns={'Unnamed:0': 'view',
-                                        'Unnamed: 1': 'Pack_ID',
-                                         'Unnamed: 2': 'HM',
-                                          'Unnamed: 3': 'ARTnum',
-                                           'Unnamed: 4': 'client',
-                                            'Unnamed: 5': 'artist',
-                                             'Unnamed: 6': 'dims',
-                                              'Unnamed: 7': 'location',
-                                               'Unnamed: 12': 'packed'})
+        if file.endswith('.xlsx'):
+            print('file endswith xlsx')
+            #create a dic from xml fi
+            hm_dic = {}
 
-        book_len = workbook.shape[0]
+            df = pd.read_excel(self.xml_fi)
+            workbook = df.rename(columns={'Unnamed:0': 'view',
+                                            'Unnamed: 1': 'Pack_ID',
+                                            'Unnamed: 2': 'HM',
+                                            'Unnamed: 3': 'ARTnum',
+                                            'Unnamed: 4': 'client',
+                                                'Unnamed: 5': 'artist',
+                                                'Unnamed: 6': 'dims',
+                                                'Unnamed: 7': 'location',
+                                                'Unnamed: 12': 'packed'})
 
-        for num in (range(book_len)):
-            info = tuple((
-                    workbook.ARTnum[num],
-                    float(workbook.dims[num].split(' x ')[0]),
-                    float(workbook.dims[num].split(' x ')[1]),
-                    float(workbook.dims[num].split(' x ')[2]),
-                    workbook.client[num],
-                    workbook.artist[num],
-                    workbook.location[num],
-                    workbook.packed[num]
+            book_len = workbook.shape[0]
+
+            for num in (range(book_len)):
+                info = tuple((
+                        workbook.ARTnum[num],
+                        float(workbook.dims[num].split(' x ')[0]),
+                        float(workbook.dims[num].split(' x ')[1]),
+                        float(workbook.dims[num].split(' x ')[2]),
+                        workbook.client[num],
+                        workbook.artist[num],
+                        workbook.location[num],
+                        workbook.packed[num]
+                        ))
+
+                hm_dic[workbook.HM[num]] = info
+
+            return hm_dic
+
+        elif file.endswith('.csv'):
+
+            hm_dic = {}
+
+            with open(file) as csv_file:
+                csv_reader = csv.reader(csv_file, delimiter=',')
+                for num, row in enumerate(csv_reader):
+
+                    # tuple = artword, dim1, dim2, dim3, client, artist, location, materials
+                    dims = row[-2].split(' x ')
+
+                    info = tuple((
+                        row[3:5],
+                        row[-2].split(' x ')[0],
+                        row[-2].split(' x ')[-1],
+                        1.5,
+                        row[0],
+                        row[2],
+                        'cavalier 24thst',
+                        row[-3]
                     ))
+                    hm_dic[num] = info
 
-            hm_dic[workbook.HM[num]] = info
+                return hm_dic 
 
-        return hm_dic
+
 
 # setup Packer funcs and algo's
 def newPacker(mode = PackingMode.Offline,
@@ -70,7 +103,6 @@ def newPacker(mode = PackingMode.Offline,
             return packer_class(pack_algo=pack_algo, sort_algo=sort_algo)
         else:
             return packer_class(pack_algo=pack_algo, rotation=rotation)
-
 
 
 # SHELF PACKING FUNC
@@ -99,6 +131,7 @@ def pack_tight_shelves(master_list, possible_dics, location):
         cur_packed = {}
         if num < 1:
             cur_space = num
+            print('cur_space', cur_space)
             cur_space_dims = loc[1][num]
             cur_pos_items = pos_dic[cur_space]
             i = utils.ls_item_dic(pos_dic[cur_space])

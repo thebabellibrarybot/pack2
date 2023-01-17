@@ -5,6 +5,7 @@ import os
 
 # Change to argparse and os
 xml_fi = 'DATA/jan_pack.xlsx'
+xml = 'DATA/Works.csv'
 location = {}
 location['location 1'] = ( 3, [(96,120,60),(96,96,60),(48,48,60)], [['Custom Crate', 'Cardboard Box', 'Taco Shell', 'Slipcase', 'slipcase', 'Tube'], ['Tube', 'Custom Crate', 'Cardboard Box'], ['Taco Shell', 'slipcase'] ], 'Big Blue' )
 # change to artparse adn os
@@ -43,4 +44,4 @@ def pack_shelves(xml_fi, location):
         #print(len(dirt[0]), len(dirt[1]))
 
 
-pack_shelves(xml_fi=xml_fi, location = location)
+pack_shelves(xml_fi=xml, location = location)
