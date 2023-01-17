@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from src import utils
 import csv
+import math
 from rectpack import PackingMode, PackingBin, SORT_LSIDE, PackerBBF, newPacker, MaxRectsBssf
 
 # creates a dict of items found in the input xml_fi
@@ -69,13 +70,12 @@ class item_ls():
                 for num, row in enumerate(csv_reader):
 
                     # tuple = artword, dim1, dim2, dim3, client, artist, location, materials
-                    dims = row[-2].split(' x ')
 
                     info = tuple((
                         row[3:5],
-                        row[-2].split(' x ')[0],
-                        row[-2].split(' x ')[-1],
-                        1.5,
+                        int(math.ceil(float(row[-2].split(' x ')[0].split(' ')[0]))),
+                        int(math.ceil(float(row[-2].split(' x ')[-1].replace('in.','').split(' ')[0]))),
+                        int(math.ceil(float(1.5))),
                         row[0],
                         row[2],
                         'cavalier 24thst',
@@ -126,17 +126,18 @@ def pack_tight_shelves(master_list, possible_dics, location):
     in_bin = {}
 
 
-    loc = list(location['location 1'])
+    loc = list(location['cavalier 24thst'])
     for num in range(loc[0]):
         cur_packed = {}
         if num < 1:
+            print(num)
             cur_space = num
             print('cur_space', cur_space)
-            cur_space_dims = loc[1][num]
-            cur_pos_items = pos_dic[cur_space]
-            i = utils.ls_item_dic(pos_dic[cur_space])
-            print(i)
-
+            #cur_space_dims = loc[1][num]
+            #cur_pos_items = pos_dic[cur_space]
+            #i = utils.ls_item_dic(pos_dic[cur_space])
+        elif num >= 1: 
+            print(num, 'over one')
     return 'hello world'
 
 # allow stacking?

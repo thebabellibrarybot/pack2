@@ -32,12 +32,12 @@ class storage_spaces():
     def in_right_location(self):
         right_location = {}
         wrong_location = {} 
-        storage_facility = self.location['location 1'][3]
+        storage_facility = self.location['cavalier 24thst'][3]
         
         for k, v in self.pack_item_ls.items():
             if v[6] == storage_facility:
                 item = list(v)
-                item2 = utils.append_pack_info(item, self.location['location 1'][2])
+                item2 = utils.append_pack_info(item, self.location['cavalier 24thst'][2])
                 right_location[k] = item2
             else:
                 wrong_location[k] = v
@@ -49,12 +49,12 @@ class storage_spaces():
     def in_wrong_location(self):
         right_location = {}
         wrong_location = {} #TODO send wrong_locatoin somewhere
-        storage_facility = self.location['location 1'][3]
+        storage_facility = self.location['cavalier 24thst'][3]
         
         for k, v in self.pack_item_ls.items():
             if v[6] == storage_facility:
                 item = list(v)
-                item2 = utils.append_pack_info(item, self.location['location 1'][2])
+                item2 = utils.append_pack_info(item, self.location['cavalier 24thst'][2])
                 right_location[k] = item2
             else:
                 wrong_location[k] = v
@@ -72,9 +72,9 @@ class storage_spaces():
         i = self.in_right_location() 
         allowed_spaces = {}
         cant_fit = {} #TODO do something with this can't fit stuff
-        storage_facility = self.location['location 1']
+        storage_facility = self.location['cavalier 24thst']
 
-        for num in range(self.location['location 1'][0]):
+        for num in range(self.location['cavalier 24thst'][0]):
             space_size = [float(storage_facility[1][num][0]), float(storage_facility[1][num][1]), float(storage_facility[1][num][2])]
             storage_spaces_allotment = storage_facility[2][num]
 
@@ -100,9 +100,9 @@ class storage_spaces():
     def cant_fit(self):
         i = self.in_right_location() 
         cant_fit = {} #TODO do something with this can't fit stuff
-        storage_facility = self.location['location 1']
+        storage_facility = self.location['cavalier 24thst']
 
-        for num in range(self.location['location 1'][0]):
+        for num in range(self.location['cavalier 24thst'][0]):
             space_size = [float(storage_facility[1][num][0]), float(storage_facility[1][num][1]), float(storage_facility[1][num][2])]
 
             # make sure it fils in storage space size

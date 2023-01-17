@@ -9,11 +9,11 @@ BOX_RATIO = os.environ.get('BOX_RATIO')
 # e.g. {"HM001": ['art001', 3,21,22, 'nyc-la', 'jane doe - artword', 2021, 'acrylic on cavas', 'big blue', 'taco shell']}
 # into [21,3, HM001-art001]
 def ls_item_dic(pos_dics):
-    print(type(pos_dics))
+    print(type(pos_dics), 'from utils')
     rect_ls = []
     for k,v in pos_dics.items():
-        #print(k, v)
-        rects = ((k+v[0]))
+        print(k, v)
+        rects = (v[1], v[2], (str(k)+ '_' +v[0][0]))
         print(rects)
     return 'hello from ls_item_dic'
 
